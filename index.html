@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library Management System</h1>
+    <h2>Add New Book</h2>
+    <form id="addBookForm">
+        <input type="text" id="title" placeholder="Book Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <input type="number" id="published_year" placeholder="Published Year" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <h2>Books</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Published Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="booksTable">
+        </tbody>
+    </table>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000/books";
+
+        // Fetch and display books
+        function fetchBooks() {
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(books => {
+                    const booksTable = document.getElementById("booksTable");
+                    booksTable.innerHTML = books.map(book => `
+                        <tr>
+                            <td>${book.id}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.published_year}</td>
+                            <td>
+                                <button onclick="deleteBook(${book.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `).join("");
+                });
+        }
+
+        // Add a new book
+        document.getElementById("addBookForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const title = document.getElementById("title").value;
+            const author = document.getElementById("author").value;
+            const published_year = document.getElementById("published_year").value;
+
+            fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title, author, published_year })
+            }).then(() => {
+                fetchBooks();
+                this.reset();
+            });
+        });
+
+        // Delete a book
+        function deleteBook(bookId) {
+            fetch(`${API_URL}/${bookId}, { method: "DELETE" }`)
+                .then(() => fetchBooks());
+        }
+
+        // Initial fetch
+        fetchBooks();
+    </script>
+</body>
+</html>
