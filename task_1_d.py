@@ -1,7 +1,5 @@
-# Initialize an empty dictionary to store student data
-students = {}
 
-# Function to create a new student record
+students = {}
 def create_student():
     student_id = input("Enter Student ID: ")
     if student_id in students:
@@ -13,7 +11,6 @@ def create_student():
     students[student_id] = {"name": name, "age": age, "grades": grades}
     print("Student record created successfully.")
 
-# Function to read student data
 def read_student():
     student_id = input("Enter Student ID to view details: ")
     if student_id in students:
@@ -24,7 +21,6 @@ def read_student():
     else:
         print("Student ID not found.")
 
-# Function to update an existing student record
 def update_student():
     student_id = input("Enter Student ID to update: ")
     if student_id in students:
@@ -36,7 +32,6 @@ def update_student():
     else:
         print("Student ID not found.")
 
-# Function to delete a student record
 def delete_student():
     student_id = input("Enter Student ID to delete: ")
     if student_id in students:
@@ -45,7 +40,6 @@ def delete_student():
     else:
         print("Student ID not found.")
 
-# Menu to perform CRUD operations
 def menu():
     while True:
         print("\nStudent Management System")
@@ -70,5 +64,4 @@ def menu():
         else:
             print("Invalid choice. Please try again.")
 
-# Run the program
 menu()
